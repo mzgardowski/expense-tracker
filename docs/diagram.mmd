@@ -1,0 +1,13 @@
+C4Context
+    title Diagram kontenerów (C4) - Cloud Task Manager
+    Person(user, "Użytkownik", "Zarządza swoimi wydatkami")
+    
+    Enterprise_Boundary(c1, "System Cloud Task Manager") {
+        Container(web_app, "Frontend (React 19)", "Vite, HTTPS", "Interfejs użytkownika")
+        Container(api, "Backend (API)", "Node 24", "Logika biznesowa, REST API")
+        ContainerDb(db, "Baza danych (SQL)", "Azure SQL Serverless", "Przechowuje dane i wydatki")
+    }
+
+    Rel(user, web_app, "Korzysta z", "HTTPS")
+    Rel(web_app, api, "Wysyła zapytania", "JSON/HTTPS")
+    Rel(api, db, "Odczytuje/Zapisuje", "PostgreSQL / Port 5432")
