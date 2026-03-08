@@ -1,6 +1,13 @@
 import api from "../apiBase";
 
-const getAllExpenses = async () => {
+export interface Expense {
+  id: number;
+  amount: number;
+  description: string;
+  date: string;
+}
+
+const getAllExpenses = async (): Promise<Expense[]> => {
   try {
     const response = await api.get("/expenses");
     return response.data;
