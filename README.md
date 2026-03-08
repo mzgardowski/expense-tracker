@@ -2,6 +2,18 @@
 
 Projekt natywnej aplikacji chmurowej realizowany w architekturze 3-warstwowej.
 
+## Wymagany .env
+
+```
+VITE_API_URL
+```
+
+## Uruchomienie Dockera
+
+```
+docker compose up -d
+```
+
 ## Deklaracja Architektury (Mapowanie Azure)
 
 Ten projekt został zaplanowany z myślą o usługach PaaS (Platform as a Service) w chmurze Azure.
@@ -15,6 +27,7 @@ Ten projekt został zaplanowany z myślą o usługach PaaS (Platform as a Servic
 ## 🏗 Status Projektu i Dokumentacja
 
 - [x] **Artefakt 1:** Zaplanowano strukturę folderów i diagram C4 (dostępny w `/docs`).
-- [x] **Artefakt 2:** Konfiguracja środowiska Docker (w trakcie...).
+- [x] **Artefakt 2:** Konfiguracja środowiska Docker.
+- [x] **Artefakt 3:** Działająca warstwa prenzentacji
 
 > **Informacja:** Ten plik będzie ewoluował. W kolejnych etapach dodamy tutaj sekcje 'Quick Start', opis zmiennych środowiskowych oraz instrukcję wdrożenia (CI/CD).

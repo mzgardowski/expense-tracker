@@ -1,5 +1,3 @@
-#Dockerfile dla frontendu
-
 # Etap 1: budowanie aplikacji
 FROM node:22-alpine AS builder
 
