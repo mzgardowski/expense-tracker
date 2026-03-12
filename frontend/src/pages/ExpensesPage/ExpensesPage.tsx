@@ -9,7 +9,7 @@ const ExpensesPage = () => {
     const fetchExpenses = async () => {
       try {
         const { data } = await getAllExpenses();
-        console.log("Fetched expenses:", data);
+
         setExpenses(data);
       } catch (error) {
         console.error("Error fetching expenses:", error);
