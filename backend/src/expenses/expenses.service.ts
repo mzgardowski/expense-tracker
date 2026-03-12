@@ -111,9 +111,13 @@ export class ExpensesService {
   ): Promise<Expense> {
     const expense = await this.findOne(id);
 
+    const { date, ...rest } = updateExpenseDto as UpdateExpenseDto & {
+      date?: string;
+    };
+
     const updated = this.expenseRepository.merge(expense, {
-      ...updateExpenseDto,
-      ...(updateExpenseDto.date && { date: new Date(updateExpenseDto.date) }),
+      ...rest,
+      ...(date && { date: new Date(date) }),
     });
 
     return this.expenseRepository.save(updated);

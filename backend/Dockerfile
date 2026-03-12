@@ -5,11 +5,11 @@ WORKDIR /app
 # Install curl for inter-service connectivity tests
 RUN apk add --no-cache curl
 
-COPY package*.json ./
-RUN npm install
+COPY package.json yarn.lock* ./
+RUN yarn install --frozen-lockfile
 
 COPY . .
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start:dev"]
+CMD ["yarn", "start:dev"]
