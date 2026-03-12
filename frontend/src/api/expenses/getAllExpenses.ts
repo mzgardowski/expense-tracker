@@ -1,20 +1,21 @@
 import api from "../apiBase";
+import type { ExpenseFilters, PaginatedExpenses } from "../../types/expense";
 
-export interface Expense {
-  id: number;
-  amount: number;
-  description: string;
-  date: string;
-}
+const getAllExpenses = async (
+  filters?: ExpenseFilters,
+): Promise<PaginatedExpenses> => {
+  const params: Record<string, string | number> = {};
 
-const getAllExpenses = async (): Promise<Expense[]> => {
-  try {
-    const response = await api.get("/expenses");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching expenses:", error);
-    throw error;
-  }
+  if (filters?.dateFrom) params.dateFrom = filters.dateFrom;
+  if (filters?.dateTo) params.dateTo = filters.dateTo;
+  if (filters?.minAmount !== undefined) params.minAmount = filters.minAmount;
+  if (filters?.maxAmount !== undefined) params.maxAmount = filters.maxAmount;
+  if (filters?.category) params.category = filters.category;
+  if (filters?.page) params.page = filters.page;
+  if (filters?.limit) params.limit = filters.limit;
+
+  const response = await api.get("/expenses", { params });
+  return response.data;
 };
 
 export default getAllExpenses;

@@ -1,17 +1,11 @@
 import api from "../apiBase";
+import type { CreateExpensePayload, Expense } from "../../types/expense";
 
-const addNewExpense = async (expenseData: {
-  amount: number;
-  description: string;
-  date: string;
-}) => {
-  try {
-    const response = await api.post("/expenses", expenseData);
-    return response.data;
-  } catch (error) {
-    console.error("Error adding new expense:", error);
-    throw error;
-  }
+const addNewExpense = async (
+  payload: CreateExpensePayload,
+): Promise<Expense> => {
+  const response = await api.post("/expenses", payload);
+  return response.data;
 };
 
 export default addNewExpense;

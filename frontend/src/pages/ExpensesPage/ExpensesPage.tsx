@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import getAllExpenses, {
-  type Expense,
-} from "../../api/expenses/getAllExpenses";
+import getAllExpenses from "../../api/expenses/getAllExpenses";
+import type { Expense } from "../../types/expense";
 
 const ExpensesPage = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -9,7 +8,8 @@ const ExpensesPage = () => {
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        const data = await getAllExpenses();
+        const { data } = await getAllExpenses();
+        console.log("Fetched expenses:", data);
         setExpenses(data);
       } catch (error) {
         console.error("Error fetching expenses:", error);
@@ -29,7 +29,7 @@ const ExpensesPage = () => {
         <ul>
           {expenses.map((expense) => (
             <li key={expense.id}>
-              {expense.description}: ${expense.amount} on{" "}
+              {expense.title}: ${expense.amount} on{" "}
               {new Date(expense.date).toLocaleDateString()}
             </li>
           ))}
