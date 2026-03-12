@@ -11,7 +11,19 @@ services:
   backend:
     build: ./backend
     ports:
-      - "8081:80"
+      - "8081:3000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 1433
+      DB_USER: sa
+      DB_PASSWORD: "StrongPassword123!"
+      DB_NAME: expense_tracker
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - cloud-network
 
@@ -21,8 +33,27 @@ services:
     environment:
       SA_PASSWORD: "StrongPassword123!"
       ACCEPT_EULA: "Y"
+      MSSQL_DB: expense_tracker
     ports:
       - "1433:1433"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/opt/mssql-tools/bin/sqlcmd",
+          "-S",
+          "localhost",
+          "-U",
+          "sa",
+          "-P",
+          "StrongPassword123!",
+          "-Q",
+          "SELECT 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     networks:
       - cloud-network
 

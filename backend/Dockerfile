@@ -1,7 +1,15 @@
-#Dockerfile dla backendu
-#Wykorzystujemy minimalny obraz systemu Linux (Alpine)
-FROM alpine
-#Instalacja narzędzia curl do testów łączności międzyserwisowej
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Install curl for inter-service connectivity tests
 RUN apk add --no-cache curl
-#Wypisanie statusu i zapętlenie procesu, aby kontener pozostał aktywny
-CMD ["sh", "-c", "echo 'Backend service is running...' && sleep infinity"]
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start:dev"]
