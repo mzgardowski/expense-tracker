@@ -1,18 +1,27 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 import { ApiProperty } from '@nestjs/swagger';
 import { ExpenseCategory } from '../enums/expense-category.enum';
 
 @Entity('expenses')
 export class Expense {
   @ApiProperty({ example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' })
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn({ type: 'uniqueidentifier' })
   id: string;
+
+  @BeforeInsert()
+  generateId() {
+    if (!this.id) {
+      this.id = uuidv4();
+    }
+  }
 
   @ApiProperty({ example: 'Groceries', maxLength: 255 })
   @Column({ type: 'nvarchar', length: 255 })
