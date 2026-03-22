@@ -46,7 +46,9 @@ async function ensureDatabaseExists() {
           password: process.env.DB_PASSWORD ?? 'StrongPassword123!',
           database: process.env.DB_NAME ?? 'expense_tracker',
           entities: [Expense],
-          synchronize: true,
+          synchronize: false,
+          migrations: [__dirname + '/migrations/*.{js,ts}'],
+          migrationsRun: true,
           options: {
             encrypt: false,
             trustServerCertificate: true,

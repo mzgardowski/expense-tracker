@@ -22,7 +22,7 @@ export const CATEGORY_LABELS: Record<ExpenseCategory, string> = {
 };
 
 export interface Expense {
-  id: number;
+  id: string;
   title: string;
   amount: number;
   category: ExpenseCategory;

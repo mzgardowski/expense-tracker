@@ -21,6 +21,9 @@ FROM nginx:alpine
 #Kopiujemy zbudowaną aplikację do katalogu serwowanego przez Nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+#Kopiujemy konfigurację Nginx z reverse proxy
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 #Informacja dla Dockera, że kontener nasłuchuje na porcie 80
 EXPOSE 80
 

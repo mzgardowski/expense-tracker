@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -51,21 +50,29 @@ export class ExpensesController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a single expense by id' })
-  @ApiParam({ name: 'id', type: Number, example: 1 })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+  })
   @ApiResponse({ status: 200, description: 'Expense found', type: Expense })
   @ApiResponse({ status: 404, description: 'Expense not found' })
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<Expense> {
+  findOne(@Param('id') id: string): Promise<Expense> {
     return this.expensesService.findOne(id);
   }
 
   @Put(':id')
   @ApiOperation({ summary: 'Update an existing expense' })
-  @ApiParam({ name: 'id', type: Number, example: 1 })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+  })
   @ApiResponse({ status: 200, description: 'Expense updated', type: Expense })
   @ApiResponse({ status: 400, description: 'Validation error' })
   @ApiResponse({ status: 404, description: 'Expense not found' })
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() updateExpenseDto: UpdateExpenseDto,
   ): Promise<Expense> {
     return this.expensesService.update(id, updateExpenseDto);
@@ -74,10 +81,14 @@ export class ExpensesController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete an expense' })
-  @ApiParam({ name: 'id', type: Number, example: 1 })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+  })
   @ApiResponse({ status: 204, description: 'Expense deleted' })
   @ApiResponse({ status: 404, description: 'Expense not found' })
-  remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  remove(@Param('id') id: string): Promise<void> {
     return this.expensesService.remove(id);
   }
 }

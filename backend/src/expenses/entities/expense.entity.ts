@@ -10,9 +10,9 @@ import { ExpenseCategory } from '../enums/expense-category.enum';
 
 @Entity('expenses')
 export class Expense {
-  @ApiProperty({ example: 1 })
-  @PrimaryGeneratedColumn()
-  id: number;
+  @ApiProperty({ example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' })
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ApiProperty({ example: 'Groceries', maxLength: 255 })
   @Column({ type: 'nvarchar', length: 255 })

@@ -1,6 +1,6 @@
 import api from "../apiBase";
 
-const deleteExpense = async (id: number): Promise<void> => {
+const deleteExpense = async (id: string): Promise<void> => {
   await api.delete(`/expenses/${id}`);
 };
 

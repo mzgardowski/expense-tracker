@@ -97,7 +97,7 @@ export class ExpensesService {
     };
   }
 
-  async findOne(id: number): Promise<Expense> {
+  async findOne(id: string): Promise<Expense> {
     const expense = await this.expenseRepository.findOne({ where: { id } });
     if (!expense) {
       throw new NotFoundException(`Expense with id ${id} not found`);
@@ -106,7 +106,7 @@ export class ExpensesService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateExpenseDto: UpdateExpenseDto,
   ): Promise<Expense> {
     const expense = await this.findOne(id);
@@ -123,7 +123,7 @@ export class ExpensesService {
     return this.expenseRepository.save(updated);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const expense = await this.findOne(id);
     await this.expenseRepository.remove(expense);
   }
