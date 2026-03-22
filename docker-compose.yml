@@ -35,6 +35,8 @@ services:
     environment:
       MSSQL_SA_PASSWORD: "StrongPassword123!"
       ACCEPT_EULA: "Y"
+    volumes:
+      - db-data:/var/opt/mssql
     ports:
       - "1433:1433"
     healthcheck:
@@ -53,3 +55,6 @@ services:
 networks:
   cloud-network:
     driver: bridge
+
+volumes:
+  db-data:
