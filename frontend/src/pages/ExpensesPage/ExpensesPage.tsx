@@ -39,7 +39,7 @@ const ExpensesPage = () => {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: number) => deleteExpense(id),
+    mutationFn: (id: string) => deleteExpense(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["expenses"] });
       toast.success("Wydatek został usunięty.");
@@ -61,7 +61,7 @@ const ExpensesPage = () => {
     setFilters({ page: 1, limit: PAGE_LIMIT });
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     if (window.confirm("Czy na pewno chcesz usunąć ten wydatek?")) {
       deleteMutation.mutate(id);
     }

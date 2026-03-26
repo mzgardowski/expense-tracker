@@ -18,7 +18,7 @@ interface ExpensesListProps {
   expenses: Expense[];
   isLoading: boolean;
   onEdit: (expense: Expense) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
   isDeleting?: boolean;
 }
 
