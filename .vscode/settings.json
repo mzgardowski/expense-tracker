@@ -1,0 +1,5 @@
+{
+  "appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"],
+  "appService.defaultWebAppToDeploy": "/subscriptions/dc755286-4914-4e70-bfc3-bf5de86d0737/resourceGroups/api-expenses-manager-95964_group/providers/Microsoft.Web/sites/api-expenses-manager-95964",
+  "appService.deploySubpath": "backend"
+}
