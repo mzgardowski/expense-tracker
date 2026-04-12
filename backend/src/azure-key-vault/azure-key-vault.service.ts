@@ -30,7 +30,9 @@ export class AzureKeyVaultService {
   private readonly client: SecretClient;
 
   constructor(configService: ConfigService) {
-    const vaultUrl = configService.getOrThrow<string>('KEY_VAULT_URL');
+    const vaultUrl = configService.getOrThrow<string>(
+      'KEY_VAULT_URL',
+    ) as string;
     const credential = new DefaultAzureCredential();
     this.client = new SecretClient(vaultUrl, credential);
     this.logger.log(`Key Vault client initialized for: ${vaultUrl}`);
