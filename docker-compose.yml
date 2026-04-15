@@ -13,7 +13,7 @@ services:
     ports:
       - "8081:3000"
     environment:
-      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+      KEY_VAULT_URL: ${KEY_VAULT_URL}
     env_file:
       - ./backend/.env
     volumes:
