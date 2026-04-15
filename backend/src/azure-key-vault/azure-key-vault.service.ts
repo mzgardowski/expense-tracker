@@ -27,18 +27,27 @@ export async function fetchSecret(
 @Injectable()
 export class AzureKeyVaultService {
   private readonly logger = new Logger(AzureKeyVaultService.name);
-  private readonly client: SecretClient;
+  private readonly client: SecretClient | undefined;
 
   constructor(configService: ConfigService) {
-    const vaultUrl = configService.getOrThrow<string>(
-      'KEY_VAULT_URL',
-    ) as string;
-    const credential = new DefaultAzureCredential();
-    this.client = new SecretClient(vaultUrl, credential);
-    this.logger.log(`Key Vault client initialized for: ${vaultUrl}`);
+    const vaultUrl = configService.get<string>('KEY_VAULT_URL');
+    if (vaultUrl) {
+      const credential = new DefaultAzureCredential();
+      this.client = new SecretClient(vaultUrl as string, credential);
+      this.logger.log(`Key Vault client initialized for: ${vaultUrl}`);
+    } else {
+      this.logger.warn(
+        'KEY_VAULT_URL not set — AzureKeyVaultService disabled (using env vars for DB)',
+      );
+    }
   }
 
   async getSecret(secretName: string): Promise<string> {
+    if (!this.client) {
+      throw new Error(
+        'AzureKeyVaultService is not initialized (KEY_VAULT_URL missing)',
+      );
+    }
     try {
       const secret = await this.client.getSecret(secretName);
 
