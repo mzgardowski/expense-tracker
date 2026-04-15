@@ -34,7 +34,9 @@ describe('ExpensesService', () => {
     save: jest.fn().mockResolvedValue(mockExpense),
     findOne: jest.fn().mockResolvedValue(mockExpense),
     remove: jest.fn().mockResolvedValue(undefined),
-    merge: jest.fn().mockImplementation((entity: any, dto: any) => ({ ...entity, ...dto })),
+    merge: jest
+      .fn()
+      .mockImplementation((entity: any, dto: any) => ({ ...entity, ...dto })),
     createQueryBuilder: jest.fn(() => mockQueryBuilder),
   } as any;
 
@@ -71,14 +73,21 @@ describe('ExpensesService', () => {
 
   describe('create', () => {
     it('should create and save an expense', async () => {
+      const date = new Date().toISOString();
       const dto: CreateExpenseDto = {
         title: 'Test',
         amount: 100,
-        date: new Date().toISOString(),
+        date,
         category: ExpenseCategory.FOOD,
       };
       await expect(service.create(dto)).resolves.toEqual(mockExpense);
-      expect(repo.create).toHaveBeenCalledWith(expect.objectContaining(dto));
+      // The service converts date string to Date, so match on Date
+      expect(repo.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ...dto,
+          date: expect.any(Date),
+        }),
+      );
       expect(repo.save).toHaveBeenCalled();
     });
   });
@@ -113,6 +122,8 @@ describe('ExpensesService', () => {
 
   describe('update', () => {
     it('should update and save an expense', async () => {
+      // Ensure repo.findOne returns the mockExpense
+      repo.findOne = jest.fn().mockResolvedValue(mockExpense);
       const dto: UpdateExpenseDto = { title: 'Updated' } as any;
       await expect(service.update('1', dto)).resolves.toEqual(mockExpense);
       expect(repo.merge).toHaveBeenCalled();
@@ -122,6 +133,8 @@ describe('ExpensesService', () => {
 
   describe('remove', () => {
     it('should remove an expense', async () => {
+      // Ensure repo.findOne returns the mockExpense
+      repo.findOne = jest.fn().mockResolvedValue(mockExpense);
       await expect(service.remove('1')).resolves.toBeUndefined();
       expect(repo.remove).toHaveBeenCalled();
     });
