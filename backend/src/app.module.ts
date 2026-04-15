@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AzureKeyVaultModule } from './azure-key-vault/azure-key-vault.module';
+import { fetchSecret } from './azure-key-vault/azure-key-vault.service';
 import { parseMssqlConnectionString } from './config/connection-string.parser';
 import { envValidationSchema } from './config/env.validation';
 import { Expense } from './expenses/entities/expense.entity';
@@ -18,11 +20,23 @@ import { ExpensesModule } from './expenses/expenses.module';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const logger = new Logger('DatabaseConfig');
-        const connectionString =
-          configService.getOrThrow<string>('DB_CONNECTION_STRING');
+        const keyVaultUrl = configService.getOrThrow<string>('KEY_VAULT_URL');
 
-        const { host, port, username, password, database, encrypt, trustServerCertificate } =
-          parseMssqlConnectionString(connectionString);
+        logger.log('Fetching DbConnectionString from Azure Key Vault...');
+        const connectionString = await fetchSecret(
+          keyVaultUrl,
+          'DbConnectionString',
+        );
+
+        const {
+          host,
+          port,
+          username,
+          password,
+          database,
+          encrypt,
+          trustServerCertificate,
+        } = parseMssqlConnectionString(connectionString);
         logger.log(`Database connection configured for host: ${host}`);
 
         return {
@@ -43,6 +57,7 @@ import { ExpensesModule } from './expenses/expenses.module';
         };
       },
     }),
+    AzureKeyVaultModule,
     ExpensesModule,
   ],
   controllers: [AppController],
